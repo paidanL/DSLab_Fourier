@@ -9,8 +9,8 @@ import uasyncio as asyncio
 
 
 def main():
-    potentiometer = ADC(Pin(26))
-    ultrasonic = Ultrasonic(Pin(19, Pin.OUT), Pin(20, Pin.IN))
+    ultrasonic_l = Ultrasonic(Pin(19, Pin.OUT), Pin(20, Pin.IN))
+    ultrasonic_r = Ultrasonic(Pin(19, Pin.OUT), Pin(3, Pin.IN))
 
     audio_out = I2S(
         0,
@@ -40,11 +40,11 @@ def main():
             nonlocal tone, write_count, refresh_count
             while True:
                 await asyncio.sleep(0.01)
-                distance = ultrasonic.read_cm()
-                if math.isnan(distance):
+                pitch = ultrasonic_l.read_cm()
+                if math.isnan(pitch):
                     continue
-                samplecount = int(25 + (84 - 25) * (distance - 1) / (60 - 1))
-                volume = potentiometer.read_u16() / 2
+                samplecount = int(25 + (84 - 25) * (pitch - 1) / (60 - 1))
+                volume = ultrasonic_r.read_cm() * 546
                 tone = make_tone(samplecount, volume)
                 refresh_count += 1
         

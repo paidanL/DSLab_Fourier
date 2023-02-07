@@ -7,14 +7,14 @@ import time
 
 
 def main():
-    potentiometer = ADC(Pin(26))
+    ultrasonic_r = Ultrasonic(Pin(19, Pin.OUT), Pin(3, Pin.IN))
     ultrasonic = Ultrasonic(Pin(19, Pin.OUT), Pin(20, Pin.IN))
 
     while True:
         distance = ultrasonic.read_cm()
-        pot_value = potentiometer.read_u16()
+        volume = ultrasonic_r.read_cm() * 546
 
-        print(f"{pot_value:5d}\t{distance:6.2f}")
+        print(f"{volume:.5f}\t{distance:6.2f}")
         time.sleep(0.01)
 
 
