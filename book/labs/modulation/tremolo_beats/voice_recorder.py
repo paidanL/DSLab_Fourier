@@ -14,8 +14,8 @@ chunk = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 5
-OUTPUT_FILE_NAME = "my_recording.wav"
+RECORD_SECONDS = 10
+OUTPUT_FILE_NAME = "aidan_voice_clip.wav"
 
 p = pyaudio.PyAudio()
 
