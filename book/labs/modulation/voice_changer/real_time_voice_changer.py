@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+
 
 """real_time_voice_changer.py: As the name indicates, this code changes your voice in realtime"""
 
-__author__      = "Adharsh Sabukumar"
-
+__author__ = "Adharsh Sabukumar"
 
 
 import pyaudio
@@ -22,32 +21,33 @@ RECORD_SECONDS = 5
 
 p = pyaudio.PyAudio()
 
-stream = p.open(format = FORMAT,
-                channels = CHANNELS,
-                rate = RATE,
-                input = True,
-                output = True,
-                frames_per_buffer = chunk)
+stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                output=True,
+                frames_per_buffer=chunk)
 swidth = 2
 
-y = 2**4*np.sin(np.linspace(0, 6*np.pi, chunk, endpoint=False))
+y = 2**4 * np.sin(100 * np.linspace(0, 6 * np.pi, chunk, endpoint=False))
 
 while(True):
 
-    data = stream.read(chunk, exception_on_overflow = False)
+    data = stream.read(chunk, exception_on_overflow=False)
     data_length = len(data)
-    data = np.array(wave.struct.unpack("%dh"%(data_length/swidth), data))
-    data_length = data_length//swidth
+    data = np.array(wave.struct.unpack("%dh" % (data_length / swidth), data))
+    data_length = data_length // swidth
 
-    data = np.multiply(y,data).astype(np.int16)
+    data = np.multiply(y, data).astype(np.int16)
 
-    #print(data)
+    # print(data)
 
-    chunkout = struct.pack("%dh"%(data_length), *list(data)) #convert back to 16-bit data
+    # convert back to 16-bit data
+    chunkout = struct.pack("%dh" % (data_length), *list(data))
     stream.write(chunkout, chunk)
 
 
-print ("* done")
+print("* done")
 
 stream.stop_stream()
 stream.close()
