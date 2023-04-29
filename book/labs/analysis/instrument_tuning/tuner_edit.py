@@ -24,7 +24,13 @@ class Tuner():
         self.swidth = 2
 
         self.program_info()
-
+        
+        self.notes = dict(
+            zip(
+                "C C# D D# E F F# G G# A A# B".split(),
+                440*2**((np.arange(12)-9)/12)
+            )
+        )
 
     def open_stream_for_tuning(self):
         
@@ -94,14 +100,18 @@ class Tuner():
         return np.abs(freq)
     
     def get_freq(self, note):
+        return self.notes[note]
         
 
     def tune(self):
 
         
-        user_input = ''
+        self.show_menu()
+        user_input = input("Enter your choice: ")
 
         while user_input != 'q':
+            
+            target_freq = self.get_freq(user_input)
 
             print("Tuner starts in 3 seconds! Get ready to play the note.")
 
@@ -121,7 +131,7 @@ class Tuner():
             freq = self.find_max_freq(frames)
 
             print("*************************************")
-            print("Frequency: ", freq)
+            print("Difference: ", target_freq - freq)
             print("*************************************")
             self.close_audio_stream(p, stream)
             
